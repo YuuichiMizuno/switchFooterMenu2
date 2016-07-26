@@ -12,6 +12,9 @@ class RootViewCollectionLayout : UICollectionViewFlowLayout
 {
     // params
     
+    let itemAmount = 10 
+    
+    
     let headerInset   : UIEdgeInsets = UIEdgeInsetsMake( 20,  0,  0,  0)
     let sectionsInset : UIEdgeInsets = UIEdgeInsetsMake(  0, 30,  0, 30)
     let footerInset   : UIEdgeInsets = UIEdgeInsetsMake( 20,  0,  0,  0)
@@ -23,6 +26,8 @@ class RootViewCollectionLayout : UICollectionViewFlowLayout
     let footerHeight            : CGFloat = 0
     
     
+    
+    
     // arrays
     
     
@@ -30,24 +35,37 @@ class RootViewCollectionLayout : UICollectionViewFlowLayout
     // MARK:  - life cycle -
     // -------------------------------------------------------------------------------------
     
-    /** 初めの事前計算 */
+    /** 事前レイアウト計算 */
     override func prepareLayout()
     {
-        
+        super.prepareLayout()
     }
     
-    /** 全体サイズ */
+    /** コンテンツ全体サイズ */
     override func collectionViewContentSize() -> CGSize
     {
-        //return contentSize
-        return CGSize(width: 200, height: 200)
+        super.collectionViewContentSize()
+        
+        var    contentsSize : CGSize = (self.collectionView?.frame.size)!
+               contentsSize.width    = contentsSize.width * CGFloat(itemAmount) // scroll landscape
+        return contentsSize
     }
     
     /** 範囲内のセル */
     override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
-        let    layoutAttributes = [UICollectionViewLayoutAttributes]()
-        return layoutAttributes
+        super.layoutAttributesForElementsInRect(rect)
+        
+        let frameSize : CGSize = (self.collectionView?.frame.size)!
+        
+        var attributes = [UICollectionViewLayoutAttributes]()
+        for i in 0 ..< itemAmount
+        {
+            let attr = UICollectionViewLayoutAttributes(forCellWithIndexPath: NSIndexPath(forRow: i, inSection: 0) )
+                attr.frame = CGRectMake( frameSize.width * CGFloat(i), 0, frameSize.height, frameSize.width ) // scroll landscape
+            attributes.append( attr )
+        }
+        return attributes
     }
     
     
@@ -58,3 +76,32 @@ class RootViewCollectionLayout : UICollectionViewFlowLayout
     
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
